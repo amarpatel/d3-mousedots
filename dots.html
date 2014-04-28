@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <!-- <link rel='stylesheet' href='styles.css'> -->
+  </head>
+  <body>
+    <script src="d3.js" charset="utf-8"></script>
+    <script>
+
+    var svg = d3.select('body').append('svg')
+                             .attr('width', window.innerWidth)
+                             .attr('height', window.innerHeight)
+                             .append('g');
+
+    var mouse = 'Move your mouse!';
+    var touch = 'Touch your screen!'
+
+    //instructions
+    svg.append('text').text('Move your mouse!')
+                      .style('fill', 'red')
+                      .attr('font-family','arial black')
+                      .attr('dx', (window.innerWidth) / 2)
+                      .attr('dy', (window.innerHeight) / 2)
+                      .attr('text-anchor','middle')
+                      .attr('opacity',.6)
+                      .attr('font-size', 0)
+                      .transition()
+                      .attr('font-size', window.innerWidth/3)
+                      .duration(5000)
+                      .attr('opacity', -1)
+                      .remove();
+
+    //enable mouse x/y tracking
+    d3.select('body').on("ontouchstart" in document ? "touchmove" : "mousemove", function () {
+      mouse = {x: d3.mouse(this)[0], y: d3.mouse(this)[1]};
+
+    svg.insert('circle')
+                       .attr('cx', function(){return mouse.x})
+                       .attr('cy', function(){return mouse.y})
+                       .attr('r', window.innerWidth * window.innerHeight * .00002)
+                       .style('fill',d3.hsl(Math.random()*360,1,.5))
+                       .attr('opacity', 1)
+                       .transition()
+                       .duration(750)
+                       .ease(Math.sqrt)
+                       .attr('r', window.innerWidth * window.innerHeight * .00008 * Math.random())
+                       .attr('opacity', 0.5)
+                       .transition()
+                       .attr('r', window.innerWidth * window.innerHeight * .000001 * Math.random())
+                       .remove();
+    });
+    </script>
+</body>
+</html>
